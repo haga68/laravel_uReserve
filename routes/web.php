@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LivewireTestController;
 use App\Http\Controllers\AlpineTestController;
+use App\Http\Controllers\EventController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,11 +32,11 @@ Route::middleware([
 
 Route::prefix('manager')
 ->middleware('can:manager-higher')
-->group(function(){ //urlはmanager/indexとなる
-    Route::get('index', function () {
-        dd('manager');
-    });
+->group(function(){ 
+    Route::resource('events', EventController::class);
+    //urlはmanager/events/indexのような形になる
 });
+
 
 Route::middleware('can:user-higher')
 ->group(function(){
