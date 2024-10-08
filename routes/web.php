@@ -33,8 +33,11 @@ Route::middleware([
 Route::prefix('manager')
 ->middleware('can:manager-higher')
 ->group(function(){ 
-    Route::resource('events', EventController::class);
-    //urlはmanager/events/indexのような形になる
+    Route::get('events/past', [EventController::class, 'past'])->name('events.past');
+    Route::resource('events', EventController::class); //urlはmanager/events/indexのような形になる
+// ルーティングは上から処理される
+// Route::get('events/past',....を、Route::resource...の下に書くと 
+// /past部分がパラメータと勘違いされるのでリソースの上に書く
 });
 
 
