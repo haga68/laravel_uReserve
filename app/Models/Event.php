@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Carbon\Carbon;
+use App\Models\User;
 
 class Event extends Model
 {
@@ -46,8 +47,15 @@ class Event extends Model
         return new Attribute(
             get: fn () => Carbon::parse($this->end_date)->format('H時i分') 
         );
-    }
-    
+    }    
     //　アクセサ、ミューテタ・・DBに情報保存時やDBから情報取得時にデータを加工する機能
 
+    // イベント側からユーザーを見れるように設定（リレーションの設定）
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'reservations')
+        ->withPivot('id', 'number_of_people', 'canceled_date');
+        // belongsToMany・・多対多のリレーション、第２引数は中間テーブル名
+        // withPivotで中間テーブル内の取得したい情報を指定
+    }
 }
