@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LivewireTestController;
 use App\Http\Controllers\AlpineTestController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\ReservationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,15 +21,17 @@ Route::get('/', function () {
     return view('calendar');
 });
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified'
-])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
-});
+// 以下、今回、API認証を使用しないので、コメントアウト
+// ログイン後、ダッシュボードに移動
+// Route::middleware([
+//     'auth:sanctum',
+//     config('jetstream.auth_session'),
+//     'verified'
+// ])->group(function () {
+//     Route::get('/dashboard', function () {
+//         return view('dashboard');
+//     })->name('dashboard');
+// });
 
 Route::prefix('manager')
 ->middleware('can:manager-higher')
@@ -40,13 +43,13 @@ Route::prefix('manager')
 // /past部分がパラメータと勘違いされるのでリソースの上に書く
 });
 
-
+// ログインしていたら見れる
 Route::middleware('can:user-higher')
 ->group(function(){
-    Route::get('index', function () {
-        dd('user');
-    });
-});
+ Route::get('/dashboard', [ReservationController::class, 'dashboard' ])->name('dashboard');
+ Route::get('/{id}', [ReservationController::class, 'detail' ])->name('events.detail');
+ Route::post('/{id}', [ReservationController::class, 'reserve' ])->name('events.reserve');
+}); 
 
 Route::controller(LivewireTestController::class)
 ->prefix('livewire-test')->name('livewire-test.')->group(function(){
