@@ -37,10 +37,10 @@ class ReservationController extends Controller
         ->where('event_id', '=', $id)
         ->where('canceled_date', '=', null)
         ->latest()
-        ->first(); 
-
+        ->first();
        
-        return view('event-detail', compact('event', 'reservablePeople', 'isReserved'));
+        return view('event-detail', 
+        compact('event', 'reservablePeople', 'isReserved'));
     }
 
     public function reserve(Request $request)

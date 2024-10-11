@@ -1,24 +1,4 @@
-{{-- x-ファイル名　で　componentとして読み込む --}}
-{{-- 変数をわたすときは「:属性名 = '$変数名'」の形で、わたす。
-左右同じ名前がわかりやすい--}}
-
-@auth
-<x-event-detail-auth 
-  :event='$event'
-  :reservablePeople='$reservablePeople'
-  :isReserved='$isReserved' 
-/>
-@endauth
-
-@guest
-<x-event-detail-guest 
-  :event='$event' 
-  :reservablePeople='$reservablePeople'
-  :isReserved='$isReserved' 
-/>
-@endguest 
-
-{{-- <x-app-layout>
+<x-calendar-layout>
   <x-slot name="header">
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">
           イベント詳細
@@ -36,7 +16,7 @@
                     {{ session('status') }}
                 </div>
             @endif
-            <form method="post" action="{{ route('events.reserve', ['id' => $event->id ]) }}" >
+            <form method="get" action="{{ route('login') }}" >
                 @csrf
                 <div>
                     <x-jet-label for="event_name" value="イベント名" />
@@ -45,6 +25,9 @@
                 <div class="mt-4">
                     <x-jet-label for="information" value="イベント詳細" />
                     {!! nl2br(e($event->information)) !!}
+                    {{-- e() ・・エスケープする(サニタイズ)
+                         nl2br・・改行を<br />に変換
+                         {!! !!} ・・<br>だけエスケープしない --}}
                 </div>
                 <div class="md:flex justify-between">
                   <div class="mt-4">
@@ -95,4 +78,4 @@
           </div>
       </div>
   </div>
-</x-app-layout> --}}
+</x-calendar-layout>
