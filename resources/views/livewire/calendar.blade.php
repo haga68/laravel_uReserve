@@ -8,7 +8,7 @@
         value="{{ $currentDate }}"
         wire:change="getDate($event.target.value)" />
     {{--flexで横に並べ --}}
-    <div class="flex border border-green-400 mx-auto"> 
+    <div class="flex mx-auto"> 
         <x-calendar-time /> {{--縦軸の時間--}}
         @for($i = 0; $i < 7; $i++) {{--7日分を表示（横軸）--}}
         <div class="w-32"> {{--日付、曜日は固定で出す--}}
