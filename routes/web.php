@@ -56,7 +56,7 @@ Route::middleware('can:user-higher')
 });
 
 // middleware('auth')を使うと未ログイン時はloginページに移動
-Route::middleware('auth')->get('/{id}', [ReservationController::class, 'detail' ])->name('events.detail');
+Route::get('/{id}', [ReservationController::class, 'detail' ])->name('events.detail');
 
 Route::controller(LivewireTestController::class)
 ->prefix('livewire-test')->name('livewire-test.')->group(function(){
