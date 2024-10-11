@@ -8,7 +8,7 @@
         value="{{ $currentDate }}"
         wire:change="getDate($event.target.value)" />
     {{--flexで横に並べ --}}
-    <div class="flex border border-green-400 mx-auto"> 
+    <div class="flex mx-auto"> 
         <x-calendar-time /> {{--縦軸の時間--}}
         @for($i = 0; $i < 7; $i++) {{--7日分を表示（横軸）--}}
         <div class="w-32"> {{--日付、曜日は固定で出す--}}
@@ -22,14 +22,17 @@
                     @if (!is_null($events->firstWhere('start_date', 
                     $currentWeek[$i]['checkDay'] . " " . \Constant::EVENT_TIME[$j])))
                         @php // 開始 - 終了の差分を計算
+                           $eventId = $events->firstWhere('start_date', $currentWeek[$i]['checkDay'] . " " . \Constant::EVENT_TIME[$j])->id;
                            $eventName = $events->firstWhere('start_date', $currentWeek[$i]['checkDay'] . " " . \Constant::EVENT_TIME[$j])->name;
                            $eventInfo = $events->firstWhere('start_date', $currentWeek[$i]['checkDay'] . " " . \Constant::EVENT_TIME[$j]);
                            $eventPeriod = \Carbon\Carbon::parse($eventInfo->start_date)->diffInMinutes($eventInfo->end_date) / 30 - 1; // 差分
                         @endphp
                         {{-- イベント名を取得--}}
+                        <a href="{{ route('events.detail', ['id' => $eventId ])}}">
                         <div class="py-1 px-2 h-8 border border-gray-200 text-xs bg-blue-100"> 
                             {{ $eventName }}
                         </div>
+                        </a>
                         {{-- イベント時間が30分より大きければ --}}
                         @if( $eventPeriod > 0)
                             @for($k = 0; $k < $eventPeriod; $k++)
