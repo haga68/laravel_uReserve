@@ -28,12 +28,19 @@ class ReservationController extends Controller
 
         if(!is_null($reservedPeople)){ //予約がある場合
             //予約可能な人数
-            $resevablePeople = $event->max_people - $reservedPeople->number_of_people;
+            $reservablePeople = $event->max_people - $reservedPeople->number_of_people;
         } else { //予約がない場合
-            $resevablePeople = $event->max_people;
-        } 
+            $reservablePeople = $event->max_people;
+        }
+        // ログインしているユーザーがこのイベントを予約しているかどうか
+        $isReserved = Reservation::where('user_id', '=', Auth::id())
+        ->where('event_id', '=', $id)
+        ->where('canceled_date', '=', null)
+        ->latest()
+        ->first(); 
+
        
-        return view('event-detail', compact('event', 'resevablePeople'));
+        return view('event-detail', compact('event', 'reservablePeople', 'isReserved'));
     }
 
     public function reserve(Request $request)
